@@ -1,0 +1,26 @@
+{% extends "mis/layout.html" %} 
+{% load static %} 
+{% load bootstrap_pagination %} 
+{% load crispy_forms_tags %} 
+{% block body %}
+
+{% comment %} {% crispy update_patient_form %} {% endcomment %}
+<main class="d-flex flex-nowrap justify-content-center mt-5">
+
+{% include "mis/nav.html" %}
+
+    <div class="col p-4 mt-4">
+        <div class="card card-body">
+            <form method="post">{% csrf_token %}
+                <h3> Update Staff </h3>
+                {{ form|crispy }} 
+                
+                <input class="btn btn-dark" type="submit" value="Update">
+            </form>  
+        </div>
+    </div>
+</main>
+
+{% block script %}
+<script src="{% static 'mis/mis.js' %}"></script>
+{% endblock %} {% endblock %}

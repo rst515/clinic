@@ -1,0 +1,65 @@
+<!--Unused-->
+{% extends "mis/layout.html" %} 
+{% load static %} 
+{% load bootstrap_pagination %} 
+{% load crispy_forms_tags %} 
+{% block body %}
+
+<main class="d-flex flex-nowrap">
+
+    {% include "mis/nav.html" %}
+    <div class="b-example-divider b-example-vr"> 
+    </div>
+        <div class="col col-md-6 p-2">
+            {% include "mis/messages.html" %}
+<!--Patient search-->
+                <form id="patient-search" method="post"><h4>Patient search</h4>{% csrf_token %}
+                    <div class="form-floating mb-3">
+                        <input id="search_here" class="form-control mb-3" placeholder="Name" autocomplete="off"/>
+                        <label for="floatingInput">Enter patient name...</label>
+                    </div>
+
+                    <div id="box" class="btn-group-vertical ">
+                        {% comment %} {% for item in object_list %}
+                        {%endfor%} {% endcomment %}
+                    </div>
+                </form>  
+<!--end of Patient search-->
+
+
+        </div>
+
+</main>
+
+{% block script %}
+<script src="{% static 'mis/mis.js' %}"></script>
+<script>
+    const data = '{{qs_json}}'
+    console.log(data)
+
+    const rdata = JSON.parse(data.replace(/&quot;/g, '"'))
+    console.log(rdata)
+
+    const input = document.getElementById('search_here')
+    console.log(input)
+
+    let filteredArr = []
+
+    input.addEventListener('keyup', (e)=> {
+        box.innerHTML = ""
+        filteredArr = rdata.filter(info=> ''.concat(info['first_name'],info['last_name']).toLowerCase().includes(e.target.value.toLowerCase()))
+        console.log(`Filtered array: `, filteredArr)
+        if(filteredArr.length > 0){
+            filteredArr.map(item => {
+                box.innerHTML += `<a id="patient-link" class="btn btn-outline-dark text-start" onclick="return patient(${item.id})" >
+                    <b>${item['first_name']} ${item['last_name']}</b>
+                </a>`
+            })
+        } else {
+            box.innerHTML = `<b>No results found...</b>`
+        }
+    })
+
+</script>
+
+{% endblock %} {% endblock %}

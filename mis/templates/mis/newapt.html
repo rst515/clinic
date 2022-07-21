@@ -1,0 +1,30 @@
+<!--
+{% extends "mis/layout.html" %} {% load static %} 
+{% load widget_tweaks %}
+{% load bootstrap_pagination %} 
+{% load crispy_forms_tags %} {% block body %}
+
+{% include "mis/nav.html" %}
+<main class="d-flex flex-nowrap justify-content-center mt-5">
+
+    <div class="col p-4 mt-4" id="content-div">
+        {% include "mis/messages.html" %}
+     
+        <form method="post" action="" >
+            {{ form.date.label_tag }}
+            {% render_field form.date class="form-control mb-4" %}
+
+            {{ form.clinician.label_tag }}
+            {% render_field form.clinician class="form-control mb-4" hx-get="/newApptSearch" hx-target="#id_time" hx-include="*" %}
+            {% comment %} hx-indicator=".htmx-indicator" {% endcomment %}
+            {{ form.time.label_tag }}
+            {% render_field form.time class="form-control mb-4" %}
+        </form>
+    </div>
+</main>
+
+{% block script %}
+<script src="{% static 'mis/mis.js' %}"></script>
+{% endblock %}
+{% endblock %}
+-->

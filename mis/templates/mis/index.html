@@ -1,0 +1,699 @@
+{% extends "mis/layout.html" %} {% load static %} 
+{% load widget_tweaks %}
+{% load bootstrap_pagination %} 
+{% load crispy_forms_tags %} {% block body %}
+
+{% include "mis/nav.html" %}
+<main class="d-flex flex-nowrap justify-content-center mt-5 overflow-auto">
+
+<div class="col p-4 mt-4" id="content-div">
+  {% include "mis/messages.html" %}
+
+<!--New appointment form-->
+      <div class="">
+        <div
+          id="collapseNewAppt"
+          class=" collapse"
+          aria-labelledby="accordionAppts"
+          data-bs-parent="#content-div"
+        ><div class="card card-body">
+          <div class="text-end">
+            <button type="button" class="btn-close" aria-label="Close" data-bs-toggle="collapse" data-bs-target="#collapseNewAppt, #collapseAppts"></button>
+          </div>
+          
+          <div class=""> <h3>New appointment</h3>
+            {% crispy appointment_form %}
+          </div>
+        </div>
+        </div>
+      </div>
+<!--end of New appointment form-->
+<!--New Patient form-->
+  <div class="">
+    <div
+      id="collapseNewPatient"
+      class=" collapse"
+      aria-labelledby="accordionAppts"
+      data-bs-parent="#content-div">
+        <div class="card card-body">
+          <div class="text-end">
+            <button type="button" class="btn-close" aria-label="Close" data-bs-toggle="collapse" data-bs-target="#collapseNewPatient" data-bs-parent="#content-div"></button>
+          </div>
+          <div class=""> <h3>New Patient</h3>
+            {% crispy patient_form %}
+          </div>
+        </div>
+    </div>
+  </div>
+<!--end of New Patient form-->
+<!--New Staff form-->
+  <div class="">
+    <div
+      id="collapseNewStaff"
+      class=" collapse"
+      aria-labelledby="accordionAppts"
+      data-bs-parent="#content-div">
+        <div class="card card-body">
+          <div class="text-end">
+            <button type="button" class="btn-close" aria-label="Close" data-bs-toggle="collapse" data-bs-target="#collapseNewStaff" data-bs-parent="#content-div"></button>
+          </div>
+          <div class=""> <h3>New Staff</h3>
+            {% if pending_users_count %}
+              ℹ️ New users to activate: <strong>{{pending_users_list}}</strong>
+              {% else %}
+              No new users to activate.
+            {% endif %}
+            {% crispy staff_form %}
+          </div>
+        </div>
+    </div>
+  </div>
+<!--end of New Patient form-->
+<!--New Note form-->
+  <div class="">
+    <div
+      id="collapseNewNote"
+      class=" collapse"
+      aria-labelledby="accordionAppts"
+      data-bs-parent="#content-div"
+    ><div class="card card-body">
+      <div class="text-end">
+        <button type="button" class="btn-close" aria-label="Close" data-bs-toggle="collapse" data-bs-target="#collapseNewNote"></button>
+      </div>
+      <div> <h3 id="new-note">New note</h3>
+        {% crispy note_form %} 
+      </div>
+    </div>
+    </div>
+  </div>
+<!--end of New Note form-->
+<!--Patient details-->
+    <div id="patient_tables">
+      <div class="">
+        <div
+          id="collapsePatientTable"
+          class="collapse justify-content-center"
+          aria-labelledby="patient_tables"
+          data-bs-parent="#content-div"
+          >
+         <div class="card card-body"> 
+          <div class="text-end">
+            <button type="button" class="btn-close" aria-label="Close" data-bs-toggle="collapse" data-bs-target="#collapsePatientTable, #patient-search"></button>
+          </div>
+  
+          <div id="patient-record-heading" class="card bg-danger text-light p-2">
+            <div class="col-sm-12 d-flex justify-content-between">
+              <h4 id="patient-name" class="me-2"> </h4>
+              <div id="patient-button" class="btn-group">
+              </div>
+          </div>
+          </div>
+            <table class="table">
+              <tbody>
+                <tr>
+                  <th scope="row"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-heart me-2 text-danger" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M4 .5a.5.5 0 0 0-1 0V1H2a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-1V.5a.5.5 0 0 0-1 0V1H4V.5ZM1 14V4h14v10a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1Zm7-6.507c1.664-1.711 5.825 1.283 0 5.132-5.825-3.85-1.664-6.843 0-5.132Z"/>
+                  </svg> DOB</th>
+                  <td id="patient-dob"></td>
+                  <th scope="row">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-gender-ambiguous me-2 text-danger" viewBox="0 0 16 16">
+                      <path fill-rule="evenodd" d="M11.5 1a.5.5 0 0 1 0-1h4a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0V1.707l-3.45 3.45A4 4 0 0 1 8.5 10.97V13H10a.5.5 0 0 1 0 1H8.5v1.5a.5.5 0 0 1-1 0V14H6a.5.5 0 0 1 0-1h1.5v-2.03a4 4 0 1 1 3.471-6.648L14.293 1H11.5zm-.997 4.346a3 3 0 1 0-5.006 3.309 3 3 0 0 0 5.006-3.31z"/>
+                    </svg> Gender</th>
+                  <td id="patient-gender"></td>
+                </tr>
+                <tr>
+                  <th scope="row"><svg class="bi pe-none me-2 text-danger" width="16" height="16">
+                    <use xlink:href="#staff" />
+                  </svg> Clincians</th>
+                  <td id="patient-clinicians"></td>
+                  <th scope="row">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-slash-circle me-2 text-danger" viewBox="0 0 16 16">
+                      <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                      <path d="M11.354 4.646a.5.5 0 0 0-.708 0l-6 6a.5.5 0 0 0 .708.708l6-6a.5.5 0 0 0 0-.708z"/>
+                    </svg> Medications</th>
+                    <td id="patient-medications"></td>
+                </tr>
+              </tbody>
+            </table>
+  
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar3 me-2 text-danger" viewBox="0 0 16 16">
+                  <path d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857V3.857z"/>
+                  <path d="M6.5 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+                </svg> Appointments</th>
+            </tr>
+          </thead>
+        </table>
+  
+        <div class="table-wrapper">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Date</th>
+                  <th scope="col">Time</th>
+                  <th scope="col">Clinician</th>
+                  <th scope="col">Duration</th>
+                  <th scope="col" class="text-center">Attended</th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              <tbody id="patient-appointments" hx-confirm="Delete appointment: Are you sure?" hx-target="closest tr" hx-swap="outerHTML swap:1s">
+              </tbody>
+            </table>
+        </div>
+      <br>
+        <table class="table">
+          <thead>
+              <tr>
+                <th scope="col"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-journal-text me-2 text-danger" viewBox="0 0 16 16">
+                  <path d="M5 10.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5zm0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5z"/>
+                  <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2z"/>
+                  <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z"/>
+                </svg> Notes</th>
+              </tr>
+            </thead>
+        </table>
+  
+        <div class="table-wrapper">
+            <table class="table">
+              <tbody id="patient-notes">
+              </tbody>
+            </table>
+         </div>
+  
+        </div>
+       </div>
+      </div>
+      </div>
+  
+<!--end of Pateient details-->
+<!--Patient search-->
+  <form id="patient-search" method="post" class="collapse p-2"  data-bs-parent="#content-div">
+    <h4>Patient search</h4>
+    {% csrf_token %}
+      <div class="form-floating mb-3">
+          <input id="search_here" class="form-control mb-3" placeholder="Name" autocomplete="off"/>
+          <label for="floatingInput">Enter patient name...</label>
+      </div>
+      <div id="box" class="btn-group-vertical ">
+      </div>
+  </form>  
+<!--end of Patient search-->
+<!--Staff details-->
+    <div id="staff_tables">
+      <div class="">
+        <div
+          id="collapseStaffTable"
+          class="collapse justify-content-center"
+          aria-labelledby="staff_tables"
+          data-bs-parent="#content-div"
+          >
+         <div class="card card-body"> 
+          <div class="text-end">
+            <button type="button" class="btn-close" aria-label="Close" data-bs-toggle="collapse" data-bs-target="#collapseStaffTable, #staff-search"></button>
+          </div>
+  
+          <div id="staff-record-heading" class="card bg-secondary text-light p-2">
+            <div class="col-sm-12 d-flex justify-content-between">
+              <h4 class="staff-name" class="me-2"> </h4>
+              <div class="staff-button" class="btn-group">
+              </div>
+          </div>
+          </div>
+            <table class="table">
+              <tbody>
+                <tr>
+                  <th scope="row" class="text-secondary"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-building me-2" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M14.763.075A.5.5 0 0 1 15 .5v15a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5V14h-1v1.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V10a.5.5 0 0 1 .342-.474L6 7.64V4.5a.5.5 0 0 1 .276-.447l8-4a.5.5 0 0 1 .487.022zM6 8.694 1 10.36V15h5V8.694zM7 15h2v-1.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5V15h2V1.309l-7 3.5V15z"/>
+                    <path d="M2 11h1v1H2v-1zm2 0h1v1H4v-1zm-2 2h1v1H2v-1zm2 0h1v1H4v-1zm4-4h1v1H8V9zm2 0h1v1h-1V9zm-2 2h1v1H8v-1zm2 0h1v1h-1v-1zm2-2h1v1h-1V9zm0 2h1v1h-1v-1zM8 7h1v1H8V7zm2 0h1v1h-1V7zm2 0h1v1h-1V7zM8 5h1v1H8V5zm2 0h1v1h-1V5zm2 0h1v1h-1V5zm0-2h1v1h-1V3z"/>
+                  </svg> Role</th>
+                  <td class="staff-role"></td>
+                  <th scope="row" class="text-secondary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-door-open me-2" viewBox="0 0 16 16">
+                      <path d="M8.5 10c-.276 0-.5-.448-.5-1s.224-1 .5-1 .5.448.5 1-.224 1-.5 1z"/>
+                      <path d="M10.828.122A.5.5 0 0 1 11 .5V1h.5A1.5 1.5 0 0 1 13 2.5V15h1.5a.5.5 0 0 1 0 1h-13a.5.5 0 0 1 0-1H3V1.5a.5.5 0 0 1 .43-.495l7-1a.5.5 0 0 1 .398.117zM11.5 2H11v13h1V2.5a.5.5 0 0 0-.5-.5zM4 1.934V15h6V1.077l-6 .857z"/>
+                    </svg> Main Room</th>
+                  <td class="staff-main_room"></td>
+                </tr>
+                <tr>
+                  <th scope="row" class="text-secondary"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people me-2" viewBox="0 0 16 16">
+                    <path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022zM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816zM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275zM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/>
+                  </svg> Patients</th>
+                  <td class="staff-patients"></td>
+              </tbody>
+            </table>
+  
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col" class="text-secondary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar3 me-2" viewBox="0 0 16 16">
+                  <path d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857V3.857z"/>
+                  <path d="M6.5 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+                </svg> Appointments</th>
+            </tr>
+          </thead>
+        </table>
+  
+        <div class="table-wrapper">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Date</th>
+                  <th scope="col">Time</th>
+                  <th scope="col">Patient</th>
+                  <th scope="col">Duration</th>
+                  <th scope="col" class="text-center">Attended</th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              <tbody class="staff-appointments" hx-confirm="Delete appointment: Are you sure?" hx-target="closest tr" hx-swap="outerHTML swap:1s">
+              </tbody>
+            </table>
+        </div>
+      <br>
+        <table class="table">
+          <thead>
+              <tr>
+                <th scope="col" class="text-secondary"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-journal-text me-2" viewBox="0 0 16 16">
+                  <path d="M5 10.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5zm0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5z"/>
+                  <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2z"/>
+                  <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z"/>
+                </svg> Notes</th>
+              </tr>
+            </thead>
+        </table>
+  
+        <div class="table-wrapper">
+            <table class="table">
+              <tbody class="staff-notes">
+              </tbody>
+            </table>
+         </div>
+  
+        </div>
+       </div>
+      </div>
+      </div>
+<!--end of Staff details-->
+<!--Staff search-->
+  <form id="staff-search" method="post" class="collapse p-2">
+    <h4>Staff search</h4>
+    {% csrf_token %}
+      <div class="form-floating mb-3">
+          <input id="search_here_staff" class="form-control mb-3" placeholder="Name" autocomplete="off"/>
+          <label for="floatingInput">Enter staff name...</label>
+      </div>
+      <div id="box_staff" class="btn-group-vertical ">
+      </div>
+  </form>  
+<!--end of Staff search-->
+<!--Appointments-->
+            <div class="">
+              <div
+                id="collapseAppts"
+                class="collapse show"
+                aria-labelledby="headingTwo"
+                data-bs-toggle=""
+                data-bs-parent="#content-div"
+              >{% if appointments %}
+              <div class="card card-body"><h3>{{apt_title}}</h3>
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Date</th>
+                        <th scope="col">Time</th>
+                        <th scope="col">Patient</th>
+                        <th scope="col">Clinician</th>
+                        <th scope="col">Duration</th>
+                        <th scope="col" class="text-center">Attended</th>
+                        <th scope="col"></th>
+                      </tr>
+                    </thead>
+                    <tbody hx-confirm="Delete appointment: Are you sure?" hx-target="closest tr" hx-swap="outerHTML swap:1s">
+                {% endif %}
+                      {% for appointment in appointments %}
+                      <tr class="appt-row-{{appointment.id}}">
+                        <th scope="row">
+                          {{appointment.date|date:"D j M Y" }}
+                        </th>
+                        <td>{{appointment.time|time:"h:i A"}}</td>
+                        <td>{{appointment.patient}}</td>
+                        <td>{{appointment.clinician}}</td>
+                        <td>{{appointment.duration_HHmm}}</td>
+                        <td class="attended-{{appointment.id}} text-center">
+                          {% if appointment.attended == True %} <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle-fill text-success" viewBox="0 0 16 16">
+                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                          </svg>
+                          {% elif appointment.attended == False %} <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle text-warning" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                          </svg>
+                          {% else %}
+                          -
+                          {% endif %}
+                        </td>
+                        <td>
+                          <!-- Row button -->
+                          <div class="btn-group">
+                            <button
+                              type="button"
+                              class="btn btn-outline-dark btn-sm dropdown-toggle"
+                              data-bs-toggle="dropdown"
+                              aria-expanded="false"
+                              id="row-button-{{appointment.id}}"
+                              aria-label="row button"
+                              style="position: inherit;"
+                            >
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                fill="currentColor"
+                                class="bi bi-three-dots-vertical"
+                                viewBox="0 0 16 16"
+                              >
+                                <path
+                                  d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"
+                                />
+                              </svg>
+                            </button>
+                            <ul class="dropdown-menu" >
+
+                              <li>
+                                <a class="dropdown-item" href="#" onclick="markAttended({{appointment.id}},true)" id="togAtt-{{appointment.id}}"
+                                  >
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle-fill text-success" viewBox="0 0 16 16">
+                                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                                    </svg> Mark as attended</a>
+                                    <a class="dropdown-item" href="#" onclick="markAttended({{appointment.id}},false)" id="togAtt-{{appointment.id}}"
+                                  >
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle text-warning" viewBox="0 0 16 16">
+                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                                  </svg> Mark not attended</a>
+                              </li>
+                              <li>
+                                <a
+                                  class="dropdown-item"
+                                  href="#"
+                                  data-bs-toggle="collapse"
+                                  data-bs-target="#collapseNewAppt, #collapseAppts"
+                                  aria-expanded="false"
+                                  aria-controls="collapseNewAppt"
+                                  ><svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="16"
+                                    height="16"
+                                    fill="currentColor"
+                                    class="bi bi-calendar-plus"
+                                    viewBox="0 0 16 16"
+                                  >
+                                    <path
+                                      d="M8 7a.5.5 0 0 1 .5.5V9H10a.5.5 0 0 1 0 1H8.5v1.5a.5.5 0 0 1-1 0V10H6a.5.5 0 0 1 0-1h1.5V7.5A.5.5 0 0 1 8 7z"
+                                    />
+                                    <path
+                                      d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"
+                                    />
+                                  </svg>
+                                  New Appointment</a
+                                >
+                              </li>
+
+                              <li><hr class="dropdown-divider" /></li>
+                              <li>
+                                <a
+                                  class="dropdown-item"
+                                  href="#"
+                                  data-bs-toggle="collapse"
+                                  data-bs-target="#collapseAppts, #collapsePatientTable"
+                                  onclick="return patient({{ appointment.patient.id }})"
+                                >
+                                <svg class="bi pe-none" width="16" height="16">
+                                  <use xlink:href="#people-circle" />
+                                </svg>
+                                 Patient Details</a
+                                >
+                              </li>
+
+                              <li><hr class="dropdown-divider" /></li>
+                              <li>
+                                <a
+                                  class="dropdown-item text-danger"
+                                  hx-put="/appointment/{{appointment.id}}/delete"
+                                  href="#"
+                                >
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="16"
+                                    height="16"
+                                    fill="currentColor"
+                                    class="bi bi-trash"
+                                    viewBox="0 0 16 16"
+                                  >
+                                    <path
+                                      d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"
+                                    />
+                                    <path
+                                      fill-rule="evenodd"
+                                      d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"
+                                    />
+                                  </svg>
+                                  Delete Appointment</a>
+                              </li>
+                            </ul>
+                          </div>
+                        </td>
+                      </tr>
+                      {% empty %} 
+                        <div class="alert alert-secondary">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle-fill" viewBox="0 0 16 16">
+                            <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+                          </svg> No appointments!
+                        </div>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+  <!--Pagination-->
+  {% if appointments.has_other_pages %}
+  <nav aria-label="pagination">
+    <ul class="pagination">
+      {% if appointments.has_previous %}
+      <li class="page-item"><a class="page-link text-dark" href="?page=1" >First</a></li>
+      <li class="page-item"><a class="page-link  text-dark" href="?page={{ appointments.previous_page_number }}" >&laquo;</a></li>
+      {% endif %} 
+      {% for page_number in appointments.paginator.page_range %} 
+        {% if appointments.number == page_number %}
+        <li class="page-item" ><a class="page-link bg-dark text-light" aria-current="page">{{ page_number }}</a></li>
+        {% else %}
+        <li class="page-item"><a href="?page={{ page_number }}" class="page-link text-dark">{{ page_number }}</a></li>
+        {% endif %} 
+      {% endfor %} 
+      {% if appointments.has_next %}
+      <li class="page-item"><a href="?page={{ appointments.next_page_number }}" class="page-link  text-dark">&raquo;</a></li>
+      <li class="page-item"><a href="?page={{ appointments.paginator.num_pages }}" class="page-link  text-dark">Last</a></li>
+      {% endif %}
+      </ul>
+  </nav>
+  {% endif %}
+
+    {% comment %} {% if appointments.has_other_pages %}
+    <nav aria-label="pagination">
+      <div class="btn-group" role="group" aria-label="Item pagination">
+        {% if appointments.has_previous %}
+        <a href="?page=1" class="btn btn-outline-dark">First</a>
+        <a href="?page={{ appointments.previous_page_number }}"
+          class="btn btn-outline-dark">&laquo;</a>
+        {% endif %} 
+        {% for page_number in appointments.paginator.page_range %} 
+          {% if appointments.number == page_number %}
+          <button class="btn btn-outline-dark active">
+            <span>{{ page_number }} <span class="sr-only"></span></span>
+          </button>
+          {% else %}
+          <a href="?page={{ page_number }}" class="btn btn-outline-dark">
+            {{ page_number }}
+          </a>
+          {% endif %} 
+        {% endfor %} 
+        {% if appointments.has_next %}
+        <a href="?page={{ appointments.next_page_number }}"
+          class="btn btn-outline-dark">&raquo;</a>
+        <a href="?page={{ appointments.paginator.num_pages }}"
+          class="btn btn-outline-dark">Last</a>
+        {% endif %}
+      </div>
+    </nav>
+    {% endif %} {% endcomment %}
+  <!--end of Pagination-->
+                </div>
+              </div>
+            </div>
+          {% comment %} </div> {% endcomment %}
+<!--end of Appointments-->
+<!--Dashboard-->
+  <div class="">
+    <div
+      id="collapseDash"
+      class="collapse"
+      aria-labelledby="headingTwo"
+      data-bs-toggle="collapse"
+      data-bs-parent="#content-div" >
+      
+        
+  <div class="card card-body">
+
+      <h3 class="card-header">Dashboard:&nbsp <span class="staff-name"></span></h3>
+  
+  <div class="card card-body bg-light text-dark">
+
+        <ul class="list-group list-group-horizontal-sm">
+          <li class="list-group-item d-flex flex-fill justify-content-between align-items-center">Appointments today
+            <span class="badge bg-secondary rounded-pill">{{dash.clinic_appointments_today_count}}</span></li>
+          <li class="list-group-item bg-secondary text-light d-flex flex-fill justify-content-between align-items-center">My appointments today
+            <span class="badge bg-danger rounded-pill">{{dash.user_appointments_today_count}}</span></li>
+        </ul>
+
+        <ul class="list-group list-group-horizontal-sm">
+          <li class="list-group-item d-flex flex-fill justify-content-between align-items-center">Appointmnets attended today
+            <span class="badge bg-secondary rounded-pill">{{dash.clinic_appointments_attended_today}}</span></li>
+          <li class="list-group-item bg-secondary text-light d-flex flex-fill justify-content-between align-items-center">My appointmnets attended today
+            <span class="badge bg-danger rounded-pill">{{dash.user_appointments_attended_today}}</span></li>
+        </ul>
+
+        <ul class="list-group list-group-horizontal-sm">
+          <li class="list-group-item d-flex flex-fill justify-content-between align-items-center">Appointments remaining today
+            <span class="badge bg-secondary rounded-pill">{{dash.clinic_remaining}}</span></li>
+          <li class="list-group-item bg-secondary text-light d-flex flex-fill justify-content-between align-items-center">My appointments remaining today
+            <span class="badge bg-danger rounded-pill">{{dash.user_remaining}}</span></li>
+        </ul>
+
+    </div>
+
+        <table class="table">
+          <tbody>
+            <tr>
+              <th scope="row" class="text-secondary"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-building me-2" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M14.763.075A.5.5 0 0 1 15 .5v15a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5V14h-1v1.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V10a.5.5 0 0 1 .342-.474L6 7.64V4.5a.5.5 0 0 1 .276-.447l8-4a.5.5 0 0 1 .487.022zM6 8.694 1 10.36V15h5V8.694zM7 15h2v-1.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5V15h2V1.309l-7 3.5V15z"/>
+                <path d="M2 11h1v1H2v-1zm2 0h1v1H4v-1zm-2 2h1v1H2v-1zm2 0h1v1H4v-1zm4-4h1v1H8V9zm2 0h1v1h-1V9zm-2 2h1v1H8v-1zm2 0h1v1h-1v-1zm2-2h1v1h-1V9zm0 2h1v1h-1v-1zM8 7h1v1H8V7zm2 0h1v1h-1V7zm2 0h1v1h-1V7zM8 5h1v1H8V5zm2 0h1v1h-1V5zm2 0h1v1h-1V5zm0-2h1v1h-1V3z"/>
+              </svg> Role</th>
+              <td class="staff-role"></td>
+              <th scope="row" class="text-secondary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-door-open me-2" viewBox="0 0 16 16">
+                  <path d="M8.5 10c-.276 0-.5-.448-.5-1s.224-1 .5-1 .5.448.5 1-.224 1-.5 1z"/>
+                  <path d="M10.828.122A.5.5 0 0 1 11 .5V1h.5A1.5 1.5 0 0 1 13 2.5V15h1.5a.5.5 0 0 1 0 1h-13a.5.5 0 0 1 0-1H3V1.5a.5.5 0 0 1 .43-.495l7-1a.5.5 0 0 1 .398.117zM11.5 2H11v13h1V2.5a.5.5 0 0 0-.5-.5zM4 1.934V15h6V1.077l-6 .857z"/>
+                </svg> Main Room</th>
+              <td class="staff-main_room"></td>
+            </tr>
+            <tr>
+              <th scope="row" class="text-secondary"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people me-2" viewBox="0 0 16 16">
+                <path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022zM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816zM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275zM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/>
+              </svg> Patients</th>
+              <td class="staff-patients"></td>
+          </tbody>
+        </table>
+
+  <div class="accordion accordion-flush" id="accordionStaffAppts">
+
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="flush-headingOne-today">
+        <button class="accordion-button bg-light collapsed fw-bold text-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne-today" aria-expanded="false" aria-controls="flush-collapseOne-today">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar3 me-2" viewBox="0 0 16 16">
+            <path d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857V3.857z"/>
+            <path d="M6.5 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+          </svg> My Appointments Today
+        </button>
+      </h2>
+      <div id="flush-collapseOne-today" class="accordion-collapse collapse show" aria-labelledby="flush-headingOne-today" data-bs-parent="#accordionStaffAppts">
+        <div class="accordion-body">
+
+          <div class="table-wrapper d-flex flex-fill">
+              <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Date</th>
+                      <th scope="col">Time</th>
+                      <th scope="col">Patient</th>
+                      <th scope="col">Duration</th>
+                      <th scope="col" class="text-center">Attended</th>
+                      <th scope="col"></th>
+                    </tr>
+                  </thead>
+                <tbody class="staff-appointments-today" hx-confirm="Delete appointment: Are you sure?" hx-target="closest tr" hx-swap="outerHTML swap:1s">
+                </tbody>
+              </table>
+          </div>
+        </div>
+    </div>
+
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="flush-headingOne">
+        <button class="accordion-button bg-light collapsed fw-bold text-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar3 me-2" viewBox="0 0 16 16">
+            <path d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857V3.857z"/>
+            <path d="M6.5 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+          </svg> All My Appointments
+        </button>
+      </h2>
+      <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionStaffAppts">
+        <div class="accordion-body">
+
+          <div class="table-wrapper d-flex flex-fill">
+              <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Date</th>
+                      <th scope="col">Time</th>
+                      <th scope="col">Patient</th>
+                      <th scope="col">Duration</th>
+                      <th scope="col" class="text-center">Attended</th>
+                      <th scope="col"></th>
+                    </tr>
+                  </thead>
+                <tbody class="staff-appointments" hx-confirm="Delete appointment: Are you sure?" hx-target="closest tr" hx-swap="outerHTML swap:1s">
+                </tbody>
+              </table>
+          </div>
+        </div>
+    </div>
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="flush-headingTwo">
+        <button class="accordion-button bg-light collapsed fw-bold text-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-journal-text me-2" viewBox="0 0 16 16">
+            <path d="M5 10.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5zm0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5z"/>
+            <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2z"/>
+            <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z"/>
+          </svg> My Notes
+        </button>
+      </h2>
+      <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionStaffAppts">
+        <div class="accordion-body">
+          <div class="table-wrapper d-flex flex-fill">
+            <table class="table">
+              <tbody class="staff-notes">
+              </tbody>
+            </table>
+         </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+      </div>
+    </div>
+  </div>
+
+<!--end of Dashboard-->
+
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+{% block script %}
+<script src="{% static 'mis/mis.js' %}"></script>
+{% endblock %} {% endblock %}

@@ -1,0 +1,253 @@
+<!--Sidebar nav-->
+    <nav class="navbar navbar-expand-lg fixed-top text-light bg-dark">
+     <div class="container-fluid">
+        <a href="{% url 'index' %}" class="navbar-brand text-light">
+        <svg class="bi pe-none me-2" width="40" height="32">
+            <use xlink:href="#hospital" />
+        </svg>
+        </a>
+{% if pending_users_count %}
+        <button type="button" class="btn btn-sm btn-secondary position-relative fixed-top" data-bs-toggle="collapse"
+        data-bs-target="#collapseStaffMenu, #collapseNewStaff, #collapseAppts"
+        aria-expanded="false"
+        aria-controls="collapseStaff">
+            New Users
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">
+              {{pending_users_count}}
+              <span class="visually-hidden">Pending users</span>
+            </span>
+          </button>
+{% endif %}
+        <button class="navbar-toggler bg-light" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+         <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+            <div class="offcanvas-header bg-dark">
+              <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Clinic MIS</h5>
+              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close">
+              </button>
+            </div>
+            <div class="offcanvas-body bg-dark">
+
+        <ul class="navbar-nav justify-content-end flex-grow-1 pe-3 nav-pills ">
+            <div class="btn-group">
+                <div class="dropdown-center">
+                    <button type="button" class="btn text-white dropdown-toggle " data-bs-toggle="dropdown" aria-expanded="false"
+                    >
+                    <svg class="bi pe-none me-2" width="16" height="16">
+                    <use xlink:href="#calendar3" />
+                    </svg>
+                    Appointments
+                    </button>
+                    <ul class="dropdown-menu">
+                        <div class="text-dark p-2">
+                        <a
+                            class="dropdown-item p-1"
+                            href="#"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapseNewAppt, #collapseAppts"
+                            aria-expanded="false"
+                            aria-controls="collapseNewAppt"
+                            ><svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            fill="currentColor"
+                            class="bi bi-calendar-plus"
+                            viewBox="0 0 16 16"
+                            >
+                            <path
+                                d="M8 7a.5.5 0 0 1 .5.5V9H10a.5.5 0 0 1 0 1H8.5v1.5a.5.5 0 0 1-1 0V10H6a.5.5 0 0 1 0-1h1.5V7.5A.5.5 0 0 1 8 7z"
+                            />
+                            <path
+                                d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"
+                            />
+                            </svg>
+                            New</a
+                        >
+                        <a class="dropdown-item p-1" href="{% url 'index' %}"
+                            ><svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            fill="currentColor"
+                            class="bi bi-calendar-event"
+                            viewBox="0 0 16 16"
+                            data-bs-target="#collapseAppts"
+                            >
+                            <path
+                                d="M11 6.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1z"
+                            />
+                            <path
+                                d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"
+                            />
+                            </svg>
+                            Today's</a
+                        >
+                        <a class="dropdown-item p-1" href="{% url 'future' %}"
+                            ><svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            fill="currentColor"
+                            class="bi bi-calendar-week"
+                            viewBox="0 0 16 16"
+                            >
+                            <path
+                                d="M11 6.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-5 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1z"
+                            />
+                            <path
+                                d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"
+                            />
+                            </svg>
+                            Future</a
+                        >
+                        <a class="dropdown-item p-1" href="{% url 'past' %}"
+                        ><svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            fill="currentColor"
+                            class="bi bi-calendar-week"
+                            viewBox="0 0 16 16"
+                        >
+                            <path
+                            d="M11 6.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-5 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1z"
+                            />
+                            <path
+                            d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"
+                            />
+                        </svg>
+                        Past</a
+                        >
+                        </div>
+                    </ul>
+            </div>
+        </div>
+
+        <div class="btn-group">
+            <div class="dropdown-center">
+            <button type="button" class="btn text-white dropdown-toggle " data-bs-toggle="dropdown" aria-expanded="false">
+
+                <svg class="bi pe-none me-2" width="16" height="16">
+                <use xlink:href="#people-circle" />
+            </svg>
+            Patients
+            </button>
+                <ul class="dropdown-menu">
+                    <div class="text-dark p-2">
+                    <a
+                        class="dropdown-item p-1"
+                        href="#"
+                        data-bs-toggle="collapse"
+                    data-bs-target="#collapsePatientMenu, #collapseNewPatient, #collapseAppts"
+                    aria-expanded="false"
+                    aria-controls="collapsePatient"
+                    data-bs-parent="content-div">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-plus" viewBox="0 0 16 16">
+                        <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H1s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C9.516 10.68 8.289 10 6 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
+                        <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"/>
+                    </svg>
+                    New</a>
+                    <a
+                        class="dropdown-item p-1"
+                        href="#"
+                        data-bs-toggle="collapse"
+                    data-bs-target="#collapsePatientMenu, #patient-search, #collapseAppts"
+                    aria-expanded="false"
+                    aria-controls="collapsePatient"> 
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                    </svg>
+                    Search</a>
+                    </div>
+                </ul>
+        </div>
+    </div>  
+    
+        <div class="btn-group">
+            <div class="dropdown-center">
+                <button type="button" class="btn text-white dropdown-toggle " data-bs-toggle="dropdown" aria-expanded="false">
+                <svg class="bi pe-none me-2" width="16" height="16">
+                    <use xlink:href="#staff" />
+                </svg>
+                Staff
+                </button>
+                <ul class="dropdown-menu">
+                    <div class="text-dark p-2">
+                        <a
+                            class="dropdown-item p-1"
+                            href="#"
+                            data-bs-toggle="collapse"
+                        data-bs-target="#collapseStaffMenu, #collapseNewStaff, #collapseAppts"
+                        aria-expanded="false"
+                        aria-controls="collapseStaff"
+                        data-bs-parent="content-div">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-plus" viewBox="0 0 16 16">
+                            <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H1s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C9.516 10.68 8.289 10 6 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
+                            <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"/>
+                        </svg> New</a>
+                        <a href="#" data-bs-toggle="collapse"
+                        data-bs-target="#staff-search, #collapseAppts, #collapseStaffMenu"
+                        aria-expanded="false"
+                        aria-controls="staff-search"
+                        class="dropdown-item p-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                        </svg> Search</a>
+                    </div>
+                </ul>
+            </div>
+        </div>
+                
+        <div class="btn-group">
+            <div class="dropdown-center">
+                <button type="button" class="btn text-white" 
+               
+                data-bs-toggle="collapse"
+                data-bs-target="#collapseDash, #collapseAppts"
+                aria-expanded="false"
+                aria-controls="dashboard"
+                onclick="return staff({{clinician_id}})">
+                <svg class="bi pe-none me-2" width="16" height="16">
+                    <use xlink:href="#grid" />
+                </svg>
+                Dashboard
+                </button>
+                <ul class="dropdown-menu">
+                </ul>
+            </div>
+        </div>
+        <div class="btn-group">
+
+        <div class="dropdown-center">
+        <button
+            href="/user/{{request.user.id}}"
+            class="btn d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+            id="dropdownUser1"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+        >
+            <badge
+            class="badge rounded-pill text-light"
+            style="background: {{request.user.roleCol}}"
+            >{{ request.user.get_group_display }}</badge
+            >&nbsp
+            <strong style="color: {{request.user.roleCol}};"
+            >{{request.user.first_name}} {{request.user.last_name}}</strong
+            >
+        </button>
+        <ul
+            class="dropdown-menu "
+            aria-labelledby="dropdownUser1"
+        ><div class="text-dark p-2">
+            <a class="dropdown-item p-1" href="{% url 'logout' %}">Log out</a>
+        </div>
+        </ul>
+        </div>
+       </div>
+    </div>
+      </div>
+     </div>
+    </nav>
+<!--end of Sidebar nav-->
